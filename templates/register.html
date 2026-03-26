@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+ 
+{% block head %}
+<style>
+  .auth-page {
+    min-height: calc(100vh - 72px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 3rem 5%;
+    position: relative;
+  }
+  .auth-page::before {
+    content: '';
+    position: absolute; inset: 0; z-index: -1;
+    background:
+      radial-gradient(ellipse 60% 50% at 70% 50%, rgba(45,212,191,0.07), transparent 70%),
+      radial-gradient(ellipse 50% 40% at 30% 50%, rgba(201,168,76,0.06), transparent 60%);
+  }
+  .auth-card {
+    max-width: 520px; width: 100%;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 28px;
+    padding: 3rem 2.5rem;
+  }
+  .auth-top { text-align: center; margin-bottom: 2.5rem; }
+  .auth-top .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; display: block;
+  }
+  .auth-top .logo span { color: var(--gold); }
+  .auth-top h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; font-weight: 700; margin-bottom: 0.4rem;
+  }
+  .auth-top p { color: var(--muted); font-size: 0.88rem; }
+  .auth-top p a { color: var(--gold); text-decoration: none; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .terms {
+    display: flex; align-items: flex-start; gap: 0.7rem;
+    font-size: 0.82rem; color: var(--muted); margin: 1.2rem 0;
+  }
+  .terms input[type="checkbox"] { margin-top: 3px; accent-color: var(--gold); }
+  .terms a { color: var(--gold); text-decoration: none; }
+  .plan-select { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1.3rem; }
+  .plan-option { position: relative; }
+  .plan-option input { display: none; }
+  .plan-option label {
+    display: block;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-align: center;
+  }
+  .plan-option label .plan-name { display:block; font-weight:600; font-size:0.9rem; margin-bottom:0.2rem; }
+  .plan-option label .plan-price { display:block; font-size:0.75rem; color: var(--muted); }
+  .plan-option input:checked + label {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.06);
+  }
+  .plan-option label:hover { border-color: rgba(201,168,76,0.4); }
+  .plan-section-label {
+    font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--muted); margin-bottom: 0.7rem; font-weight: 500;
+  }
+</style>
+{% endblock %}
+ 
+{% block content %}
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-top">
+      <span class="logo">Social<span>Buddy</span></span>
+      <h1>Create Account</h1>
+      <p>Already have one? <a href="/login">Sign in →</a></p>
+    </div>
+ 
+    <form method="POST" action="/register">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" name="first_name" placeholder="Arjun" required />
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" name="last_name" placeholder="Sharma" required />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" name="email" placeholder="you@example.com" required />
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" name="phone" placeholder="+91 00000 00000" />
+      </div>
+      <div class="form-group">
+        <label>Class / Course</label>
+        <input type="text" name="course" placeholder="e.g. BCA 2nd Semester, Class 12 Science" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Create a strong password" required />
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input type="password" name="confirm_password" placeholder="Repeat your password" required />
+      </div>
+ 
+      <div class="plan-section-label">Choose a Plan</div>
+      <div class="plan-select">
+        <div class="plan-option">
+          <input type="radio" name="plan" id="free" value="free" checked />
+          <label for="free">
+            <span class="plan-name">Free</span>
+            <span class="plan-price">Basic resources</span>
+          </label>
+        </div>
+        <div class="plan-option">
+          <input type="radio" name="plan" id="pro" value="pro" />
+          <label for="pro">
+            <span class="plan-name">✦ Pro</span>
+            <span class="plan-price">Full access</span>
+          </label>
+        </div>
+      </div>
+ 
+      <div class="terms">
+        <input type="checkbox" id="agree" required />
+        <label for="agree">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+      </div>
+ 
+      <button type="submit" class="btn-gold" style="width:100%; text-align:center;">Create Account ✦</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SocialBuddy — {% block title %}Your Academic Partner{% endblock %}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --bg2: #0f0f1a;
+      --card: rgba(255,255,255,0.04);
+      --card-border: rgba(255,255,255,0.08);
+      --gold: #c9a84c;
+      --gold2: #e8c97a;
+      --white: #f0ece4;
+      --muted: #8a8a9a;
+      --accent: #6c63ff;
+      --teal: #2dd4bf;
+      --nav-h: 72px;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+ 
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed; top:0; left:0; right:0; z-index:999;
+      height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--card-border);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display:flex; gap:2rem; list-style:none; align-items:center; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      transition: color 0.25s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--white); }
+    .nav-cta {
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #0a0a0f !important;
+      padding: 0.5rem 1.3rem;
+      border-radius: 50px;
+      font-weight: 600 !important;
+      transition: opacity 0.25s, transform 0.25s !important;
+    }
+    .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+ 
+    /* ── FLASH MESSAGES ── */
+    .flash-wrap { padding: calc(var(--nav-h) + 1rem) 5% 0; }
+    .flash {
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      border: 1px solid rgba(45,212,191,0.3);
+      background: rgba(45,212,191,0.08);
+      color: var(--teal);
+    }
+ 
+    /* ── MAIN CONTENT ── */
+    main { padding-top: var(--nav-h); }
+ 
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--card-border);
+      padding: 4rem 5% 2rem;
+      margin-top: 5rem;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    .footer-brand .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+    }
+    .footer-brand .logo span { color: var(--gold); }
+    .footer-brand p {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.7;
+      max-width: 280px;
+    }
+    .footer-col h4 {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+    .footer-col ul { list-style:none; }
+    .footer-col ul li { margin-bottom: 0.7rem; }
+    .footer-col ul li a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: var(--white); }
+    .footer-col p { color: var(--muted); font-size: 0.88rem; line-height: 1.8; }
+    .social-row { display:flex; gap:0.8rem; margin-top: 0.5rem; }
+    .social-icon {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--card-border);
+      display: flex; align-items:center; justify-content:center;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.25s;
+    }
+    .social-icon:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+    .footer-bottom {
+      border-top: 1px solid var(--card-border);
+      padding-top: 1.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-bottom p { color: var(--muted); font-size: 0.82rem; }
+    .footer-bottom span { color: var(--gold); }
+ 
+    /* ── SHARED PAGE STYLES ── */
+    .page-hero {
+      text-align: center;
+      padding: 5rem 5% 3rem;
+    }
+    .page-hero .eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .page-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .page-hero p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+ 
+    /* ── GLASS CARD ── */
+    .glass {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+    .glass:hover {
+      border-color: rgba(201,168,76,0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+ 
+    /* ── BUTTON ── */
+    .btn-gold {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #0a0a0f;
+      padding: 0.85rem 2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.25s, transform 0.25s;
+      font-family: 'DM Sans', sans-serif;
+      letter-spacing: 0.3px;
+    }
+    .btn-gold:hover { opacity: 0.85; transform: translateY(-2px); }
+    .btn-outline {
+      display: inline-block;
+      background: transparent;
+      color: var(--white);
+      padding: 0.85rem 2rem;
+      border-radius: 50px;
+      font-weight: 500;
+      font-size: 0.92rem;
+      text-decoration: none;
+      border: 1px solid var(--card-border);
+      cursor: pointer;
+      transition: border-color 0.25s, transform 0.25s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn-outline:hover { border-color: var(--gold); transform: translateY(-2px); }
+ 
+    /* ── FORM STYLES ── */
+    .form-group { margin-bottom: 1.3rem; }
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 0.85rem 1.1rem;
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.25s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--gold);
+    }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    input::placeholder, textarea::placeholder { color: var(--muted); }
+ 
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content:'';
+      position:fixed; inset:0; z-index:-1;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      background-size: 200px;
+      pointer-events: none;
+    }
+ 
+    @media (max-width: 768px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .nav-links { display: none; }
+    }
+  </style>
+  {% block head %}{% endblock %}
+</head>
+<body>
+ 
+  <!-- NAVBAR -->
+  <nav>
+    <a href="/" class="nav-logo">Social<span>Buddy</span></a>
+    <ul class="nav-links">
+      <li><a href="/" class="{% if request.endpoint == 'index' %}active{% endif %}">Home</a></li>
+      <li><a href="/about" class="{% if request.endpoint == 'about' %}active{% endif %}">About</a></li>
+      <li><a href="/contact" class="{% if request.endpoint == 'contact' %}active{% endif %}">Contact</a></li>
+      <li><a href="/login" class="{% if request.endpoint == 'login' %}active{% endif %}">Login</a></li>
+      <li><a href="/register" class="nav-cta">Get Started</a></li>
+    </ul>
+  </nav>
+ 
+  <!-- FLASH MESSAGES -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-wrap">
+        {% for category, message in messages %}
+          <div class="flash">✦ {{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+ 
+  <main>{% block content %}{% endblock %}</main>
+ 
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">Social<span>Buddy</span></div>
+        <p>Your trusted academic partner — helping students excel through quality resources, expert support, and personalized learning guidance.</p>
+        <div class="social-row" style="margin-top:1.2rem;">
+          <a href="https://www.instagram.com/socia.lbuddyy?igsh=NjN3N3pxZGZzb2Zq&utm_source=ig_contact_invite" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="https://wa.me/918217380298" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>5000
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/contact">Contact</a></li>
+          <li><a href="/register">Register</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#">PPT Design</a></li>
+          <li><a href="#">Assignments</a></li>
+          <li><a href="#">Coaching</a></li>
+          <li><a href="#">Online Tuition</a></li>
+          <li><a href="#">Study Resources</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <p>
+          <i class="fas fa-phone" style="color:var(--gold); margin-right:6px;"></i> +91 8217380298<br><br>
+          <i class="fas fa-envelope" style="color:var(--gold); margin-right:6px;"></i> tejaswininrtejaswininr@gmail.com<br><br>
+          <i class="fas fa-map-marker-alt" style="color:var(--gold); margin-right:6px;"></i> Mysuru, Karnataka
+        </p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 <span>SocialBuddy</span>. All rights reserved.</p>
+      <p>Made with <span>♥</span> for students</p>
+    </div>
+  </footer>
+ 
+</body>
+</body>

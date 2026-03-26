@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% block title %}About Us{% endblock %}
+ 
+{% block head %}
+
+
+<style>
+  
+  .about-hero { padding: 5rem 5% 4rem; text-align: center; position: relative; }
+  .about-hero::before {
+    content: '';
+    position: absolute; inset: 0; z-index: -1;
+    background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(201,168,76,0.08), transparent 70%);
+  }
+  .about-hero .eyebrow { font-size:0.75rem; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:1rem; }
+  .about-hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-weight: 700; line-height: 1.1; margin-bottom: 1.2rem;
+  }
+  .about-hero p { color: var(--muted); font-size: 1.05rem; max-width: 540px; margin: 0 auto; line-height: 1.8; }
+ 
+  .about-body { padding: 3rem 5%; }
+ 
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    margin-bottom: 5rem;
+  }
+  .about-text h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+  }
+  .about-text h2 span { color: var(--gold); }
+  .about-text p { color: var(--muted); font-size: 0.92rem; line-height: 1.85; margin-bottom: 1rem; }
+  .about-visual {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    padding: 3rem;
+    text-align: center;
+  }
+  .about-visual .big-icon { font-size: 5rem; margin-bottom: 1.5rem; line-height: 1; }
+  .about-visual h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--gold);
+  }
+  .about-visual p { color: var(--muted); font-size: 0.88rem; line-height: 1.7; }
+ 
+  .values-section { margin-bottom: 5rem; }
+  .values-section h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; font-weight: 700;
+    margin-bottom: 2.5rem; text-align: center;
+  }
+  .values-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.2rem; }
+  .value-card {
+    padding: 2rem;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .value-card:hover { border-color: rgba(201,168,76,0.3); transform: translateY(-4px); }
+  .value-card .icon { font-size: 1.8rem; margin-bottom: 1rem; }
+  .value-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .value-card p { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+ 
+  .team-section { margin-bottom: 4rem; text-align: center; }
+  .team-section h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;
+  }
+  .team-section > p { color: var(--muted); font-size: 0.9rem; margin-bottom: 2.5rem; }
+  .team-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.2rem; }
+  .team-card {
+    padding: 2rem 1.5rem;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .team-card:hover { border-color: rgba(201,168,76,0.3); transform: translateY(-4px); }
+  .team-avatar {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--accent));
+    display: flex; align-items:center; justify-content:center;
+    font-size: 1.5rem;
+    margin: 0 auto 1rem;
+  }
+  .team-card h3 { font-size: 0.98rem; font-weight: 600; margin-bottom: 0.3rem; }
+  .team-card span { color: var(--gold); font-size: 0.8rem; }
+ 
+  @media (max-width: 768px) {
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .values-grid, .team-grid { grid-template-columns: 1fr; }
+  }
+
+</style>
+
+{% endblock %}
+ 
+{% block content %}
+<section class="about-hero">
+  <div class="eyebrow">Our Story</div>
+  <h1>Built for Students,<br>By Students</h1>
+  <p>SocialBuddy was born from a simple idea — every student deserves access to quality academic support, without the stress.</p>
+</section>
+ 
+<div class="about-body">
+ 
+  <!-- MISSION -->
+  <div class="about-grid">
+    <div class="about-text">
+      <h2>Our <span>Mission</span></h2>
+      <p>SocialBuddy is a student-first academic support platform designed to bridge the gap between struggling and excelling. We provide everything from handwritten notes and assignment help to online coaching and study resources.</p>
+      <p>Founded in Mysuru, we started as a small peer-support group and grew into a full-fledged platform serving thousands of students across Karnataka and beyond.</p>
+      <p>We believe that every student — regardless of their background or resources — deserves a fair chance at academic success.</p>
+      <a href="/register" class="btn-gold" style="margin-top:1rem;">Join SocialBuddy</a>
+    </div>
+    <div class="about-visual">
+      <div class="big-icon">🎓</div>
+      <h3>2,400+ Students</h3>
+      <p>Helped across Classes 10, 11, 12, and undergraduate degree programs in Arts, Science, and Commerce.</p>
+    </div>
+  </div>
+ 
+  <!-- VALUES -->
+  <div class="values-section">
+    <h2>What We Stand For</h2>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="icon">💡</div>
+        <h3>Quality First</h3>
+        <p>Every resource we deliver is carefully reviewed for accuracy, clarity, and exam-relevance.</p>
+      </div>
+      <div class="value-card">
+        <div class="icon">🤝</div>
+        <h3>Student Trust</h3>
+        <p>We treat every student's academic journey with respect, confidentiality, and genuine care.</p>
+      </div>
+      <div class="value-card">
+        <div class="icon">🚀</div>
+        <h3>Accessible Learning</h3>
+        <p>Affordable pricing and free resources ensure that no student is left behind due to financial barriers.</p>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- TEAM -->
+  <div class="team-section">
+    <h2>The Team Behind SocialBuddy</h2>
+    <p>A passionate group of educators, designers, and student mentors.</p>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">👩‍🏫</div>
+        <h3>Tejaswini NR</h3>
+        <span>Founder & Academic Head</span>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">👨‍💻</div>
+        <h3>Aishwarya SH</h3>
+        <span>Tech & Platform Lead</span>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">🎨</div>
+        <h3>Jyothi Prakash</h3>
+        <span>Design & Content Lead</span>
+      </div>
+    </div>
+  </div>
+ 
+</div>
+{% endblock %}
