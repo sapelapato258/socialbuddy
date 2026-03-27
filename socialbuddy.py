@@ -22,7 +22,7 @@ class User(db.Model):
     phone      = db.Column(db.String(15))
     password   = db.Column(db.String(200), nullable=False)
     plan       = db.Column(db.String(10), default='free')
-    created_at = db.Column(db.DateTime, default=datetime)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class Contact(db.Model):
     id         = db.Column(db.Integer, primary_key=True)
@@ -31,7 +31,7 @@ class Contact(db.Model):
     phone      = db.Column(db.String(15))
     subject    = db.Column(db.String(200))
     message    = db.Column(db.Text)
-    created_at = db.Column(db.DateTime, default=datetime)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 # ── ROUTES ──
 @app.route('/')
