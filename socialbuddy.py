@@ -6,7 +6,8 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = 'socialbuddy_secret_2024'
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:1178663033%40Tata@localhost:3306/socialbuddy_db'
+import os
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
