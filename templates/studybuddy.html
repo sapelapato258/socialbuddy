@@ -1,1 +1,325 @@
-
+{% extends "base.html" %}
+{% block title %}StudyBuddy{% endblock %}
+ 
+{% block head %}
+<style>
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 0 5%;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background: 
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(108,99,255,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 80% 80%, rgba(201,168,76,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 50% at 10% 60%, rgba(45,212,191,0.06) 0%, transparent 60%);
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 780px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 50px;
+    padding: 0.45rem 1.1rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-badge::before {
+    content: '✦';
+    font-size: 0.65rem;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.2rem, 8vw, 6rem);
+    font-weight: 700;
+    line-height: 1.0;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.8s ease 0.1s both;
+  }
+  .hero h1 em {
+    font-style: italic;
+    background: linear-gradient(135deg, var(--gold), var(--gold2), var(--teal));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    color: var(--muted);
+    font-size: 1.1rem;
+    line-height: 1.8;
+    max-width: 520px;
+    margin: 0 auto 2.5rem;
+    animation: fadeUp 0.8s ease 0.2s both;
+  }
+  .hero-btns {
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    animation: fadeUp 0.8s ease 0.3s both;
+  }
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: var(--muted); font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase;
+    animation: bounce 2s ease infinite;
+    z-index: 1;
+  }
+  .hero-scroll::after {
+    content: '';
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--muted), transparent);
+  }
+ 
+  /* ── STATS ── */
+  .stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--card-border);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 0 5% 5rem;
+  }
+  .stat-item {
+    background: var(--bg2);
+    padding: 2rem;
+    text-align: center;
+    transition: background 0.3s;
+  }
+  .stat-item:hover { background: rgba(255,255,255,0.05); }
+  .stat-item .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+  .stat-item .label {
+    color: var(--muted);
+    font-size: 0.82rem;
+    letter-spacing: 0.5px;
+  }
+ 
+  /* ── SERVICES ── */
+  .services-section { padding: 3rem 5% 5rem; }
+  .section-header { text-align: center; margin-bottom: 3.5rem; }
+  .section-header .eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+  }
+  .section-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+  }
+  .section-header p { color: var(--muted); font-size: 0.95rem; max-width: 440px; margin: 0 auto; }
+ 
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+  }
+  .service-card {
+    padding: 2rem 1.8rem;
+    border-radius: 20px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .service-card:hover {
+    border-color: rgba(201,168,76,0.25);
+    transform: translateY(-5px);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.35);
+  }
+  .service-card:hover::before { opacity: 1; }
+  .service-icon {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.2);
+    display: flex; align-items:center; justify-content:center;
+    font-size: 1.2rem;
+    margin-bottom: 1.2rem;
+    transition: background 0.3s;
+  }
+  .service-card:hover .service-icon { background: rgba(201,168,76,0.18); }
+  .service-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    color: var(--white);
+  }
+  .service-card p { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+  .service-card .tag {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.15);
+    font-size: 0.72rem;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+  }
+ 
+  /* ── CTA SECTION ── */
+  .cta-section {
+    margin: 2rem 5%;
+    padding: 4rem;
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(108,99,255,0.08), rgba(201,168,76,0.06));
+    border: 1px solid rgba(201,168,76,0.15);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '✦';
+    position: absolute;
+    font-size: 8rem;
+    color: rgba(201,168,76,0.04);
+    top: -2rem; right: 2rem;
+    font-family: serif;
+  }
+  .cta-section h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    margin-bottom: 0.8rem;
+  }
+  .cta-section p { color: var(--muted); margin-bottom: 2rem; font-size: 0.95rem; }
+ 
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(24px); }
+    to { opacity:1; transform: translateY(0); }
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+ 
+  @media (max-width: 768px) {
+    .services-grid { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: repeat(2,1fr); }
+    .cta-section { padding: 2.5rem 1.5rem; }
+  }
+</style>
+{% endblock %}
+ 
+{% block content %}
+ 
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Student Academic Support Platform</div>
+    <h1>Your <em>Academic</em><br>Partner</h1>
+    <p>From assignments to online tuition, PPT design to exam prep — SocialBuddy has everything a student needs to succeed.</p>
+    <div class="hero-btns">
+      <a href="/register" class="btn-gold">Get Started Free</a>
+      <a href="#services" class="btn-outline">Explore Services</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+ 
+ 
+<!-- SERVICES -->
+<section class="services-section" id="services">
+  <div class="section-header">
+    <div class="eyebrow">What We Offer</div>
+    <h2>All Services in One Place</h2>
+    <p>Everything you need to ace your academics, beautifully crafted for students at every level.</p>
+  </div>
+ 
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">🎓</div>
+      <h3>Services for Students</h3>
+      <p>Comprehensive academic support tailored to school, college, and university students across all streams.</p>
+      <span class="tag">All Levels</span>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🎨</div>
+      <h3>PPT & Front Page Design</h3>
+      <p>Professional PowerPoint presentations and beautifully designed assignment front pages that impress every time.</p>
+      <span class="tag">Design</span>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">✍️</div>
+      <h3>Written Assignments & Diagrams</h3>
+      <p>Neatly handwritten assignments with accurate diagrams for science, maths, and humanities subjects.</p>
+      <span class="tag">Assignments</span>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📝</div>
+      <h3>Written Notes</h3>
+      <p>Clear, concise, and exam-ready handwritten notes covering all major subjects and syllabi.</p>
+      <span class="tag">Notes</span>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🎤</div>
+      <h3>Seminar Topic Support</h3>
+      <p>Full seminar preparation including topic selection, content research, slide design, and presentation coaching.</p>
+      <span class="tag">Seminar</span>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📚</div>
+      <h3>Coaching & Tuition</h3>
+      <p>Personalized offline coaching sessions with experienced educators for focused, results-driven learning.</p>
+      <span class="tag">Coaching</span>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">💻</div>
+      <h3>Online Tuition & Syllabus Explanation</h3>
+      <p>Live and recorded online classes with chapter-by-chapter syllabus walkthroughs — learn at your pace.</p>
+      <span class="tag">Online</span>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🏫</div>
+      <h3>Support for 10th to Degree</h3>
+      <p>Dedicated academic support from Class 10th through undergraduate degree programs across all boards.</p>
+      <span class="tag">10th – Degree</span>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📂</div>
+      <h3>Study Resources for All Courses</h3>
+      <p>A rich library of question banks, model papers, previous years' papers, and curated study materials.</p>
+      <span class="tag">Resources</span>
+    </div>
+  </div>
+</section>
+ 
+<!-- CTA -->
+<section class="cta-section">
+  <h2>Ready to Excel Academically?</h2>
+  <p>Join thousands of students already using SocialBuddy to get ahead.</p>
+  <a href="/register" class="btn-gold">Create Free Account</a>
+</section>
+ 
+{% endblock %}
